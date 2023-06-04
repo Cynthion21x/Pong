@@ -175,25 +175,37 @@ class core:
 
         if self.keyDown is not None:
 
-        # Handle the key input
+        # Player controls
             if self.keyDown == 'w':
                 self.paddle2vel = -1
-                pass
 
             elif self.keyDown == 's':
                 self.paddle2vel = 1
-                pass
+
+            elif self.keyDown == 'i':
+                self.Lscore = 0
+                self.Rscore = 0
+
+                self.reset = 5
+                
+                self.xvel = 0
+                self.yvel = 0
+                self.nVel = -1
+
+                self.b.setCell("none", self.ballX , self.ballY)
+
+                self.ballX = (self.width) // 2 -1
+                self.ballY = (self.height) // 2 -1                
 
             elif self.keyDown == 'p':
                 self.active = False;
-                pass
 
         else:
 
             self.paddle2vel = 0
 
         '''
-        #Left
+        #Ai controlled player
         if self.ballX < self.width // 2:
 
             if self.paddle2Y > self.ballY:
@@ -275,24 +287,20 @@ class core:
 
     #Display
     def Render(self):
-
-        print("==========================  Pong  =========================")
-
-        print("")
-
-        print("+----------- Player Score: " + str(self.Lscore) + "  Robot Score: " + str(self.Rscore) + " -------------+")
+        
+        finalPrint = "\n ==========================  Pong  =========================\n\n +----------- Player Score: " + str(self.Lscore) + "  Robot Score: " + str(self.Rscore) + " -------------+ \n"
 
         for i in range(0, self.height-1):
-            row = "|"
+
+            row = " |"
             for j in range(0, self.width-1):
                 row += self.b.readPos(i, j).getSymbol()
-            print(row + "|")
 
-        print("+---------------------------------------------------------+")
+            finalPrint += row + "|\n"
 
-        print("")
+        finalPrint += " +---------------------------------------------------------+ \n\n  press w and s to move, use p to exit and use i to restart"
 
-        print("press w and s to move and use p to exit")
+        print(finalPrint)
 
         time.sleep(0.1)
         os.system('cls')
@@ -309,7 +317,7 @@ class core:
             else:
                 self.keyDown = None
 
-        else:  # Unix-like systems (Linux, macOS)
+        else:  # Linux, macOS)
             
             import tty
             import termios
